@@ -1,37 +1,16 @@
-from django.shortcuts import render,HttpResponse,HttpResponseRedirect,redirect
+from django.shortcuts import get_object_or_404, render,HttpResponse,HttpResponseRedirect,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from .models import *
 from django.db import IntegrityError
-from .models import Contact
+# from .models import ContactContactInfo
 # Create your views here.
 def index(request):
     res=render(request,'application/index.html')
     return res
 
 
-def Contact(request):
-    if not request.user.is_staff:
-        return redirect('login')
-    
-    error = ""
-    if request.method == "POST":
-        n = request.POST.get('name')
-        l = request.POST.get('last_name')
-        c = request.POST.get('contact')
-        e = request.POST.get('email')
-        a = request.POST.get('age')
-        d = request.POST.get('describe')
 
-        try:
-            # Save contact data to the database
-            Contact.objects.create(First_Name=n, Last_Name=l, Contact_Number=c, Email_Id=e, Age=a, Describe=d)
-            error = "no"  # No error occurred during database operation
-        except IntegrityError:
-            error = "yes"  # Error occurred due to unique constraint violation
-
-    context = {'error': error}
-    return render(request, 'application/Contact.html', context)
 
 
 def About(request):
@@ -45,9 +24,6 @@ def Services(request):
     return res
 
 
-def Contact(request):
-    res=render(request,'application/Contact.html')
-    return res
 
 def admin_homepage(request):
     if not request.user.is_staff:
@@ -272,3 +248,47 @@ def delete_member(request):
     enq=Member.objects.get(id=pid)
     enq.delete()
     return redirect('/applications/view_member')
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        last_name = request.POST.get('last_name')
+        contact = request.POST.get('contact')
+        email = request.POST.get('email')
+        age = request.POST.get('age')
+        description = request.POST.get('describe')
+
+        try:
+            ContactInfo.objects.create(
+                name=name,
+                last_name=last_name,
+                contact=contact,
+                email=email,
+                age=age,
+                description=description
+            )
+            error = "no"
+        except:
+            error = "yes"
+        
+        return render(request, 'application/contact.html', {'error': error})
+
+    return render(request, 'application/contact.html', {'error': None})
+
+
+def contact_detail_view(request):
+    all_contact_info = ContactInfo.objects.all()  # Get all contact information
+    return render(request, 'application/contact_detail.html', {'all_contact_info': all_contact_info},)
+
+def delete_contact_view(request, contact_id):
+    # Retrieve the contact object or return a 404 error if not found
+    contact = get_object_or_404(ContactInfo, pk=contact_id)
+    
+    if request.method == 'POST':
+        # If the request method is POST, it means the user submitted a delete request
+        contact.delete()  # Delete the contact
+        return redirect('contact_detail')  # Redirect to the contact detail page after deletion
+    
+    # If the request method is GET, render a confirmation page before deletion
+    return render(request, 'application/contact_delete_confirm.html', {'contact': contact},)

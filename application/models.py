@@ -61,17 +61,15 @@ class Plan(models.Model):
 
     def __str__(self):
         return self.Name
-
-class Contact(models.Model):
-    First_Name=models.CharField(max_length=20)
-    Last_Name=models.CharField(max_length=20)
-    Contact=models.CharField(max_length=20)
-    Email_Id=models.CharField(max_length=50)
-    Age=models.CharField(max_length=20)
-    Describe=models.TextField()
-
-
-
+    
+    
+class ContactInfo(models.Model):
+    name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    contact = models.CharField(max_length=20)
+    email = models.EmailField()
+    age = models.PositiveIntegerField()
+    description = models.TextField()
 
     def __str__(self):
-        return self.First_Name
+        return f"{self.name} {self.last_name}"

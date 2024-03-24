@@ -1,0 +1,21 @@
+{% extends 'application/base.html' %}
+
+{% block title %}
+Confirm Deletion
+{% endblock title %}
+
+{% block body %}
+<div class="container" style="margin-top:30px;">
+  <h2 class="text-center">Confirm Deletion</h2>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <p>Are you sure you want to delete contact {{ contact.name }}?</p>
+      <form action="{% url 'delete_contact' contact.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'contact_detail' %}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

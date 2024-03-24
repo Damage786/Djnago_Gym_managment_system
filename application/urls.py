@@ -7,7 +7,7 @@ urlpatterns = [
     path('',views.index),
     path('About/',views.About),
     path('Services/',views.Services),
-    path('Contact/',views.Contact),
+    path('contact/',views.contact_view),
     path('login/',views.admin_login),
     path('admin_homepage/',views.admin_homepage),
     path('logout/',views.admin_logout),
@@ -23,6 +23,8 @@ urlpatterns = [
     path('add_member/',views.add_member),
     path('view_member/',views.view_member),
     path('delete_member/',views.delete_member),
+    path('contact_detail/', views.contact_detail_view, name='contact_detail'),
+    path('contact/<int:contact_id>/delete/', views.delete_contact_view, name='delete_contact'),
 
 
 ]

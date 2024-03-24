@@ -168,11 +168,18 @@ index
 
 </div>
 <style>
-  .footerr{
-    width:1515px;
-    height:450px;
-      background:url("{%static "images/ca5.jpg" %}");
+  html, body {
+    overflow-x: hidden; /* This will prevent horizontal overflow */
+    {% comment %} max-width: 100%; /* Ensure the body doesn't exceed the viewport width */ {% endcomment %}
+}
 
-  }
+
+
+  .footerr {
+    width: 100%;
+    height: 450px;
+    background: url("{%static "images/ca5.jpg" %}");
+    background-size: cover;
+}
 </style>
 {% endblock body %}
