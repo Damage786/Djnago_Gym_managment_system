@@ -33,10 +33,12 @@ def admin_homepage(request):
     eqp=Equipments.objects.all()
     plan=Plan.objects.all()
     mem=Member.objects.all()
+    cont = ContactInfo.objects.all();
     a1=0
     b1=0
     c1=0
     d1=0
+    z1=0;
 
     for i in enquiry:
         a1+=1
@@ -48,7 +50,11 @@ def admin_homepage(request):
         c1+=1
     for i in mem:
         d1+=1
-    d={'a1':a1,'b1':b1,'c1':c1,'d1':d1}
+    for i in cont:
+        z1+=1
+
+    
+    d={'a1':a1,'b1':b1,'c1':c1,'d1':d1,'z1':z1}
     res=render(request,'application/admin_homepage.html',d)
     return res
 
